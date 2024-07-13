@@ -6,7 +6,7 @@ Given a video return a json file with labels associated with each timestamp fram
 
 ------------
 ### Input:
-
+Video in mp4 format. | 
 [Video via link or local path](https://www.youtube.com/watch?v=oIPoA22qMvE)
 
 ### Output:
