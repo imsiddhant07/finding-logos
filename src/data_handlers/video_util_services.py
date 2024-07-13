@@ -7,10 +7,21 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class VideoFrameExtractionService(object):
+    """A service class for extracting frames from a video using ffmpeg."""
     def __init__(self):
         super().__init__()
         
     def get(self, **kwargs):
+        """Extracts frames from the video located at video_path and saves them in output_dir.
+
+        Args:
+        - video_path (str): Path to the input video file.
+        - output_dir (str): Directory where extracted frames will be saved.
+        - fps (float, optional): Frames per second to extract. Defaults to 10.
+
+        Raises:
+            subprocess.CalledProcessError: If ffmpeg command execution fails.
+        """
         # Step 1: Declarations
         output_dir = kwargs.get('output_dir')
         video_path = kwargs.get('video_path')
@@ -32,10 +43,18 @@ class VideoFrameExtractionService(object):
 
 
 class VideoTrimmingService(object):
+    """A service class for trimming video segments using ffmpeg."""
     def __init__(self):
         super().__init__()
     
     def get(self, **kwargs):
+        """Trims the input_video to the specified duration and saves it as output_video.
+
+        Args:
+        - input_video (str): Path to the input video file.
+        - output_video (str): Path where trimmed video will be saved.
+        - duration (float, optional): Duration of the trimmed video segment in seconds. Defaults to 10.
+        """
         logging.info(f'kwargs from trimmer {kwargs}')
         # Step 1: Declarations
         input_video = kwargs.get('input_video')

@@ -18,11 +18,23 @@ EXTRACTION_SERVICE_MAPPING = {
 
 
 class FramesInfoExtractionService(object):
+    """A service class for extracting information from frames using relevant extraction process."""
     def __init__(self):
         super().__init__()
         self.batching_service = BatchingService()
     
     def get(self, **kwargs):
+        """Extracts information from frames_data using the specified extraction_method.
+
+        Args:
+        - frames_data (List[Dict[str, Any]]): List of dictionaries containing frame data.
+                Each dictionary should at least contain 'input_frame' key.
+        - extraction_method (str): Method used for extracting information from frames.
+
+        Returns:
+        - List[Dict[str, Any]]: Updated frames_data with 'result' key added for each frame.
+
+        """
         # Step 1: Declarations
         results = list()
         input_frames = list()

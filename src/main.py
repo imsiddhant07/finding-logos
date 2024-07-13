@@ -11,6 +11,15 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class LogoDetectionPipeline(object):
+    """A pipeline class for logo detection from a video.
+
+    Attributes:
+        video_retriever_service (DataRetrieverService): Service for retrieving video data.
+        video_operation_service (VideoOperationService): Service for video operations (trimming, frame extraction).
+        frame_info_extraction_service (FramesInfoExtractionService): Service for extracting frame information.
+        response_builder_service (ResponseBuilderService): Service for building the final response.
+        response_dumping_service (JSONDumpingService): Service for dumping the response to a JSON file.
+    """
     def __init__(self):
         super().__init__()
         self.video_retriever_service = DataRetrieverService()
@@ -20,6 +29,22 @@ class LogoDetectionPipeline(object):
         self.response_dumping_service = JSONDumpingService()
 
     def get(self, **kwargs):
+        """Executes the logo detection pipeline.
+
+        Args:
+        - extraction_method (str): Method for logo extraction.
+        - video_path (str): Path to the input video file.
+        - json_path (str): Path to save the JSON response.
+        - duration (float): Duration of the video segment to process.
+        - fps (int): Frames per second for frame extraction.
+
+        Returns:
+        - dict: Final response object.
+
+        Raises:
+            IOError: If there is an issue with file operations.
+        """
+        # Step 1a: Declarations
         kwargs_for_response_dumping_service = dict()
         kwargs_for_response_builder_service = dict()
         kwargs_for_video_retriever_service = dict()
@@ -32,7 +57,7 @@ class LogoDetectionPipeline(object):
         duration = kwargs.get('duration')
         fps = kwargs.get('fps')
 
-        # Step 1: Get data to destination directory
+        # Step 1b: Get data to destination directory
         kwargs_for_video_retriever_service['data_source'] = video_path
         saved_path = self.video_retriever_service.get(
             **kwargs_for_video_retriever_service)
