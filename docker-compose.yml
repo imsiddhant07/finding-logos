@@ -1,0 +1,22 @@
+# version: '3'
+
+# services:
+#   logo-detection:
+#     build: .
+#     volumes:
+#       - .:/usr/src/app
+#     entrypoint: ["python", "-m", "src.main"]
+#     command: []
+
+version: '3.8'
+
+services:
+  logo-extractor:
+    build: .
+    ports:
+      - "4000:5000"
+    environment:
+      - NAME=World
+    volumes:
+      - .:/app
+    command: python -m src.app
