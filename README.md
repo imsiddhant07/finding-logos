@@ -18,6 +18,28 @@ Given a video return a json file with labels associated with each timestamp fram
 }
 ```
 
+Updated the response format:
+```
+{
+    "cocacola": [
+        {
+            "timestamp": 1.0,
+            "xywh": [56, 45, 12, 13]
+        }
+    ],
+    "pepsi": [
+        {
+            "timestamp": 2.0,
+            "xywh": [51, 43, 12, 13]
+        },
+        {
+            "timestamp": 3.0,
+            "xywh": [51, 43, 12, 13]
+        }
+    ]
+}
+```
+
 </br>
 
 ------------
@@ -53,8 +75,26 @@ fps : Integer
 ```
 4. Run necessary pre-processing on frames prior to inference.
 5. Run inference
-5. Dump to a json file.
+```
 
+|-- FramesInfoExtractionService : Does necessary operations on video data.
+    |-- YOLOInferenceService : Inference service to get logo data.
+```
+5. Build the response as per labels.
+```
+ResponseBuilderService
+|-- ResponseBuilderService : Does necessary operations on video response.
+``` 
+5. Dump to a json file.
+```
+|-- JSONDumpingService: Dumps the data into a json file specified at request.
+```
+6. Create a annotated video ( - Experimental Quality might be at the lower end here)
+```
+|-- BoxedVideoGenerationService: The service dumps the result frames and generates a video based on it.
+    |-- VideoCreationService: Service generates video based on frames.
+    |-- AnnotatedFramesDumpingService: Dumps frames to directory. 
+```
 
 <br>
 

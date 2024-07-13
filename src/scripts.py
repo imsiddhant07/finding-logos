@@ -1,23 +1,34 @@
 import os
-import random
 
-# Directory path containing the images
-directory = None # '/Users/siddhant/Projects/finding-logos/data/train/images/train'
+def get_parent_directory_before_keyword(file_path, keyword):
+    """
+    Get the parent directory path before a specific keyword in a file path.
 
-# Get all files in the directory
-files = os.listdir(directory)
+    Args:
+        file_path (str): Full file path containing the keyword.
+        keyword (str): Keyword to find the directory path before.
 
-# Filter only .jpg files
-jpg_files = [f for f in files if f.endswith('.jpg')]
-print(jpg_files)
-
-# Iterate over the .jpg files and rename them
-for i, filename in enumerate(jpg_files):
-    # Generate new filename
-    new_filename = f'image_{i+1}.jpg'
+    Returns:
+        str: Parent directory path before the keyword.
+    """
+    # Find the position of the last occurrence of the keyword
+    index = file_path.rfind(keyword)
     
-    # Rename the file
-    os.rename(os.path.join(directory, filename), os.path.join(directory, new_filename))
-    print(f'Renamed {filename} to {new_filename}')
+    # If keyword not found, return the original file_path
+    if index == -1:
+        return file_path
+    
+    # Get the substring before the keyword
+    parent_directory = file_path[:index]
+    
+    # Clean up path using os.path.dirname to remove any extra slashes
+    parent_directory = os.path.dirname(parent_directory)
+    
+    return parent_directory
 
-print('All files renamed successfully.')
+# Example usage:
+# Example usage:
+target_path = '/Users/siddhant/Projects/finding-logos/data/inference/3975/extracted_frames/frame_000002.jpg'
+target_dir_name = 'extracted_frames'
+parent_directory = get_parent_directory_before_keyword(target_path, target_dir_name)
+print(parent_directory)

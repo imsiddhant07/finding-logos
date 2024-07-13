@@ -62,7 +62,7 @@ class VideoTrimmingService(object):
         duration = kwargs.get('duration', 10) or 10  # Note: Incase the duration is longer than length of video, it will by default return the video as is.
         
         # os.makedirs(output_video, exist_ok=True)
-                
+                     
         # Step 2: Construct the ffmpeg command as a list of arguments
         ffmpeg_command = [
             'ffmpeg',            # The ffmpeg command
@@ -75,3 +75,43 @@ class VideoTrimmingService(object):
         
         # Step 3: Execute the ffmpeg command
         subprocess.run(ffmpeg_command)
+        
+        
+class VideoCreationService(object):
+    """A service class for create video from frames using ffmpeg."""
+    def __init__(self):
+        super().__init__()
+    
+    def get(self, **kwargs):
+        """
+        Create a video from frames using ffmpeg.
+
+        Args:
+            frames_dir (str): Directory containing the frames.
+            output_video_path (str): Path to save the output video.
+            fps (int, optional): Frames per second for the output video. Defaults to 25.
+
+        Returns:
+            None
+        """
+        output_video_path = kwargs.get('output_video_path')
+        frames_dir = kwargs.get('frames_dir')
+        fps = kwargs.get('fps')
+        
+        # Step 1: Check if the frames directory exists
+        if not os.path.exists(frames_dir):
+            raise FileNotFoundError(f"Frames directory '{frames_dir}' does not exist.")
+        
+        # Step 2: Construct ffmpeg command to create video from frames
+        ffmpeg_cmd = [
+            'ffmpeg',
+            '-framerate', str(fps),       # Frames per second of the output video
+            '-pattern_type', 'glob',      # Use glob pattern for image input
+            '-i', f'{frames_dir}/*.jpg',  # Input frames pattern (assuming JPG format)
+            '-c:v', 'libx264',            # Output video codec
+            '-pix_fmt', 'yuv420p',        # Pixel format
+            output_video_path             # Output video file path
+        ]
+        
+        # Step 3: Execute ffmpeg command
+        subprocess.run(ffmpeg_cmd)

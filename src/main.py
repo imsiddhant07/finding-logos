@@ -5,6 +5,7 @@ from src.data_handlers.video_operation_service import VideoOperationService
 from src.inference_handlers.video_frames_info_extraction_service import FramesInfoExtractionService
 from src.results_services.response_builder_service import ResponseBuilderService
 from src.utils.json_dumping_service import JSONDumpingService
+from src.video_annotation_handlers.boxed_video_generation_service import BoxedVideoGenerationService
 
 # Setup logger
 logging.basicConfig(level=logging.DEBUG)
@@ -19,6 +20,7 @@ class LogoDetectionPipeline(object):
         frame_info_extraction_service (FramesInfoExtractionService): Service for extracting frame information.
         response_builder_service (ResponseBuilderService): Service for building the final response.
         response_dumping_service (JSONDumpingService): Service for dumping the response to a JSON file.
+        boxed_video_generation_service (BoxedVideoGenerationService): Service for creating annotated video.
     """
     def __init__(self):
         super().__init__()
@@ -27,6 +29,7 @@ class LogoDetectionPipeline(object):
         self.frame_info_extraction_service = FramesInfoExtractionService()
         self.response_builder_service = ResponseBuilderService()
         self.response_dumping_service = JSONDumpingService()
+        self.boxed_video_generation_service = BoxedVideoGenerationService()
 
     def get(self, **kwargs):
         """Executes the logo detection pipeline.
@@ -45,6 +48,7 @@ class LogoDetectionPipeline(object):
             IOError: If there is an issue with file operations.
         """
         # Step 1a: Declarations
+        kwargs_for_boxed_video_generation_service = dict()
         kwargs_for_response_dumping_service = dict()
         kwargs_for_response_builder_service = dict()
         kwargs_for_video_retriever_service = dict()
@@ -81,8 +85,13 @@ class LogoDetectionPipeline(object):
         kwargs_for_response_dumping_service['json_path'] = json_path
         kwargs_for_response_dumping_service['json_object'] = response
         self.response_dumping_service.get(**kwargs_for_response_dumping_service)
+        
+        # Step 6: Create annotated video
+        kwargs_for_boxed_video_generation_service['results'] = results
+        kwargs_for_boxed_video_generation_service['fps'] = fps
+        self.boxed_video_generation_service.get(**kwargs_for_boxed_video_generation_service)
 
-        # logging.info(f'Saved video to {saved_path} | Created frames at {frames_data} | results {results}')
-        logging.info(f'Saved video to {saved_path} | Created frames at {frames_data}')
+        logging.info(f'results {results}')
+        # logging.info(f'Saved video to {saved_path} | Created frames at {frames_data}')
         
         return response

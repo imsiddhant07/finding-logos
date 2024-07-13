@@ -1,6 +1,6 @@
 import os
 import shortuuid
-from src.data_handlers.video_util_services import VideoFrameExtractionService, VideoTrimmingService
+from src.utils.video_util_services import VideoFrameExtractionService, VideoTrimmingService
 
 shortuuid.set_alphabet('1234567890')
 
