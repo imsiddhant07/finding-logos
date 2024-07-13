@@ -37,10 +37,15 @@ Reason for Selection: Familiarity with the process and the potential for signifi
 <br>
 <u>Process:</u>
 Dataset Creation and Annotation: Created a focused dataset consisting of 60 images for training and 10 for validation, annotated using tool V7.
+The training performance was decent but it likely overfitted due to presence small subset of data.
+A slightly higher number of diverse samples should improve the performance even further.
 <br>
 <u>Model Choice:</u> Initiated trials with YOLOv8n, YOLOv9, and YOLOv10n, given their recent advancements and suitability for quick iterations.
 <br>
 <u>Performance:</u> All models after fine-tuning showed significantly improved performance. The choice between models was based on a balance of performance, resource consumption, and ease of integration.
+
+![Results](artefacts/results.png)
+
 <br>
 <u>Final Decision:</u> Selected YOLOv8n for the production pipeline due to its comparable performance with more recent versions and better integration capability within existing infrastructure.
 Reasons for Discontinuation of Other Models
